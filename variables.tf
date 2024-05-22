@@ -10,3 +10,7 @@ variable "AWS_SECRET_ACCESS_KEY" {
 variable "AWS_SESSION_TOKEN" {
   default = ""
 }
+
+variable "lambda_version" {
+  default = 0
+}

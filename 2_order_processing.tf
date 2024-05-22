@@ -90,6 +90,7 @@ resource "aws_sfn_state_machine" "order_state_machine" {
     },
     "Process Order": {
       "Type": "Task",
+      "TimeoutSeconds": 60,
       "Resource": "arn:aws:states:::sqs:sendMessage.waitForTaskToken",
       "Parameters": {
         "QueueUrl": "${aws_sqs_queue.order_queue.url}",
@@ -99,7 +100,19 @@ resource "aws_sfn_state_machine" "order_state_machine" {
         }
       },
       "ResultPath": "$.result",
-      "Next": "SNS Publish"
+      "Next": "SNS Publish",
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "BackoffRate": 2,
+          "MaxAttempts": 3,
+          "IntervalSeconds": 5,
+          "Comment": "retry",
+          "JitterStrategy": "FULL"
+        }
+      ]
     },
     "SNS Publish": {
       "Type": "Task",
