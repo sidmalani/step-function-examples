@@ -5,9 +5,11 @@ stepfunction-examples
 
 
 
-tofu init
-tofu plan
-tofy apply
+``tofu init``
+
+``tofu plan``
+
+``tofy apply``
 
 
 # Order Step Function
